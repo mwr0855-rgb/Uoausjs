@@ -69,7 +69,7 @@ export default function AboutPage() {
           backgroundGradient="bg-gradient-to-br from-white dark:from-neutral-900 via-neutral-50/30 dark:via-neutral-800/30 to-neutral-100/50 dark:to-neutral-800/50"
           overlayOpacity={0}
           className="mx-0 my-0 rounded-none"
-          enableAnimation={!prefersReducedMotion}
+          // enableAnimation={!prefersReducedMotion}
         />
 
         {/* قسم القصة */}
