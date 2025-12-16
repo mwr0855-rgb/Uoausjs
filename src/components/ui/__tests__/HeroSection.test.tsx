@@ -174,30 +174,13 @@ describe('HeroSection', () => {
     expect(section).toHaveAttribute('aria-label', 'Test Hero Section');
   });
 
-  it('respects prefers-reduced-motion', () => {
-    // Mock prefers-reduced-motion
-    Object.defineProperty(window, 'matchMedia', {
-      writable: true,
-      value: vi.fn().mockImplementation((query) => ({
-        matches: query === '(prefers-reduced-motion: reduce)',
-        media: query,
-        onchange: null,
-        addListener: vi.fn(),
-        removeListener: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-        dispatchEvent: vi.fn(),
-      })),
-    });
-
+  it('renders without animations', () => {
     render(
       <HeroSection
         title="Test Title"
-        enableAnimation={true}
       />
     );
-    // Animation should be disabled when prefers-reduced-motion is true
-    // This is handled by useReducedMotion hook
+    // Component renders without animation props
   });
 
   it('applies correct overlay opacity', () => {

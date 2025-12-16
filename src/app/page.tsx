@@ -3,9 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import PageBackground from '@/components/ui/PageBackground';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
-import { ScrollAnimation } from '@/components/ui';
 import HeroSection from '@/components/ui/HeroSection';
 import { heroPresets, heroSectionSpacing } from '@/data/hero-presets';
 
@@ -43,8 +41,6 @@ const WhatMakesUsSection = dynamic(
 
 export default function HomePage() {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
-  const [isMounted, setIsMounted] = useState(false);
 
   // ⚙️ تحسين الأداء مع GPU
   useEffect(() => {
@@ -63,11 +59,6 @@ export default function HomePage() {
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // التأكد من mount قبل عرض الحركات
-  useEffect(() => {
-    setIsMounted(true);
   }, []);
 
   const sections = useMemo(
@@ -91,13 +82,7 @@ export default function HomePage() {
         aria-hidden="true"
       >
         <div
-          className={`h-full bg-gradient-to-r from-primary-600 via-accent-500 to-primary-600
-                     shadow-[0_0_15px_rgba(99,102,241,0.35)]
-                     ${
-                       prefersReducedMotion
-                         ? 'transition-none'
-                         : 'transition-transform duration-200 ease-out will-change-transform'
-                     } origin-left`}
+          className="h-full bg-gradient-to-r from-primary-600 via-accent-500 to-primary-600 shadow-[0_0_15px_rgba(99,102,241,0.35)] origin-left"
           style={{ transform: `scaleX(${scrollProgress / 100})` }}
         />
       </div>
@@ -107,31 +92,16 @@ export default function HomePage() {
         <HeroSection {...heroPresets.home} className="mx-auto" />
       </div>
 
-      {/* ✦ أقسام الصفحة ✦ - مع Scroll Animations المحسّنة */}
+      {/* ✦ أقسام الصفحة ✦ */}
       <div className="relative z-10">
-        {sections.map((Section, i) => {
-          // تنويع التأثيرات حسب القسم
-          const getDirection = (index: number) => {
-            const directions: Array<
-              'up' | 'down' | 'left' | 'right' | 'fade' | 'scale'
-            > = ['up', 'right', 'left', 'fade', 'scale', 'up', 'up'];
-            return directions[index] || 'up';
-          };
-
-          return (
-            <ScrollAnimation
-              key={i}
-              direction={getDirection(i)}
-              delay={i * 0.15}
-              duration={0.8}
-              className={`container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${heroSectionSpacing}`}
-              threshold={0.1}
-              triggerOnce={true}
-            >
-              <Section />
-            </ScrollAnimation>
-          );
-        })}
+        {sections.map((Section, i) => (
+          <div
+            key={i}
+            className={`container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${heroSectionSpacing}`}
+          >
+            <Section />
+          </div>
+        ))}
       </div>
 
       {/* ✦ زر العودة إلى الأعلى ✦ */}

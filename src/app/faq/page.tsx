@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, HelpCircle, MessageCircle, BookOpen, Shield, CreditCard, 
   GraduationCap, Users, Settings, TrendingUp, ChevronDown, ChevronUp,
@@ -11,7 +10,6 @@ import Link from 'next/link';
 import { faqs } from '@/components/faq-data';
 import PageBackground from '@/components/ui/PageBackground';
 import HeroSection from '@/components/ui/HeroSection';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 interface FAQ {
   question: string;
@@ -30,7 +28,6 @@ const categories = [
 ];
 
 export default function FAQPage() {
-  const prefersReducedMotion = useReducedMotion();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [openIndexes, setOpenIndexes] = useState<Set<number>>(new Set());
@@ -129,7 +126,6 @@ export default function FAQPage() {
         ]}
         className="mx-0 my-0 rounded-none"
         contentClassName="py-12 sm:py-16 lg:py-20"
-        enableAnimation={!prefersReducedMotion}
       >
         {/* Search Bar - Custom Content */}
         <div className="relative max-w-2xl mx-auto mt-8">
@@ -140,13 +136,13 @@ export default function FAQPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث في الأسئلة الشائعة..."
-              className="w-full pr-12 pl-4 py-4 text-lg rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-md text-white placeholder:text-blue-50 dark:placeholder:text-blue-200 focus:outline-none focus:border-white/40 focus:bg-white/20 transition-all"
+              className="w-full pr-12 pl-4 py-4 text-lg rounded-xl border-2 border-white/20 bg-white/10 backdrop-blur-md text-white placeholder:text-blue-50 dark:placeholder:text-blue-200 focus:outline-none focus:border-white/40 focus:bg-white/20"
               aria-label="البحث في الأسئلة الشائعة"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center"
                 aria-label="مسح البحث"
               >
                 <X className="w-4 h-4 text-white" />
@@ -155,13 +151,9 @@ export default function FAQPage() {
           </div>
           
           {searchQuery && (
-            <motion.div
-              initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-2 text-sm text-blue-50 dark:text-blue-100 text-center"
-            >
+            <div className="mt-2 text-sm text-blue-50 dark:text-blue-100 text-center">
               تم العثور على {filteredFAQs.length} سؤال
-            </motion.div>
+            </div>
           )}
         </div>
       </HeroSection>
@@ -169,12 +161,7 @@ export default function FAQPage() {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Categories Filter */}
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.6 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">التصنيفات</h2>
@@ -187,13 +174,11 @@ export default function FAQPage() {
               const isActive = selectedCategory === category.id;
               
               return (
-                <motion.button
+                <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  whileHover={prefersReducedMotion ? {} : { scale: 1.05, y: -2 }}
-                  whileTap={prefersReducedMotion ? {} : { scale: 0.95 }}
-                  className={`
-                    flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all duration-300
+                    className={`
+                    flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold
                     ${isActive 
                       ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg' 
                       : 'bg-white dark:bg-neutral-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-neutral-700 shadow-md'
@@ -213,19 +198,14 @@ export default function FAQPage() {
                   `}>
                     {count}
                   </span>
-                </motion.button>
+                </button>
               );
             })}
           </div>
-        </motion.div>
+        </div>
 
         {/* Stats */}
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.7 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <div className="bg-white dark:bg-neutral-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-neutral-700">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
@@ -261,15 +241,11 @@ export default function FAQPage() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* FAQ Items */}
         {filteredFAQs.length === 0 ? (
-          <motion.div
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-16"
-          >
+          <div className="text-center py-16">
             <HelpCircle className="w-16 h-16 text-gray-500 dark:text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
               لم يتم العثور على نتائج
@@ -287,23 +263,18 @@ export default function FAQPage() {
             >
               إعادة تعيين البحث
             </button>
-          </motion.div>
+          </div>
         ) : (
           <div className="space-y-4">
-            <AnimatePresence>
-              {filteredFAQs.map((faq, index) => {
-                const originalIndex = (faq as any).originalIndex;
-                const isOpen = openIndexes.has(originalIndex);
-                
-                return (
-                  <motion.div
-                    key={originalIndex}
-                    initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={prefersReducedMotion ? { opacity: 1, height: 'auto' } : { opacity: 0, height: 0 }}
-                    transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3, delay: index * 0.05 }}
-                    className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg border border-gray-200 dark:border-neutral-700 overflow-hidden hover:shadow-xl transition-shadow"
-                  >
+            {filteredFAQs.map((faq, index) => {
+              const originalIndex = (faq as any).originalIndex;
+              const isOpen = openIndexes.has(originalIndex);
+              
+              return (
+                <div
+                  key={originalIndex}
+                  className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg border border-gray-200 dark:border-neutral-700 overflow-hidden hover:shadow-xl"
+                >
                     <button
                       onClick={() => toggleFAQ(originalIndex)}
                       className="w-full px-6 py-5 text-right flex items-center justify-between gap-4 hover:bg-gray-50 dark:hover:bg-neutral-700 transition-colors"
@@ -340,61 +311,39 @@ export default function FAQPage() {
                         </div>
                       </div>
                       
-                      <motion.div
-                        animate={prefersReducedMotion ? {} : { rotate: isOpen ? 180 : 0 }}
-                        transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
-                        className="flex-shrink-0"
-                      >
+                      <div className="flex-shrink-0">
                         {isOpen ? (
                           <ChevronUp className="w-5 h-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                         ) : (
                           <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
                         )}
-                      </motion.div>
+                      </div>
                     </button>
                     
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          initial={prefersReducedMotion ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={prefersReducedMotion ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-                          transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 py-4 pt-0 border-t border-gray-200 dark:border-neutral-700">
-                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
-                              {faq.answer}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
+                    {isOpen && (
+                      <div className="overflow-hidden">
+                        <div className="px-6 py-4 pt-0 border-t border-gray-200 dark:border-neutral-700">
+                          <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
-            </AnimatePresence>
           </div>
         )}
 
         {/* Contact CTA */}
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={prefersReducedMotion ? { duration: 0 } : { delay: 0.8 }}
-          className="mt-12 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden"
-        >
+        <div className="mt-12 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
           <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/20 to-transparent rounded-full blur-3xl"></div>
           
           <div className="relative z-10 text-center max-w-3xl mx-auto">
-            <motion.div
-              animate={prefersReducedMotion ? {} : { rotate: [0, 10, -10, 0] }}
-              transition={prefersReducedMotion ? { duration: 0 } : { duration: 2, repeat: Infinity, repeatDelay: 3 }}
-              className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-full mb-6"
-            >
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-full mb-6">
               <MessageCircle className="w-8 h-8" aria-hidden="true" />
-            </motion.div>
+            </div>
             
             <h2 className="text-2xl sm:text-3xl font-extrabold mb-4">
               لم تجد إجابة لسؤالك؟
@@ -421,7 +370,7 @@ export default function FAQPage() {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </PageBackground>
   );

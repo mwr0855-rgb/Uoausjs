@@ -1,9 +1,9 @@
 /**
  * Type definitions for HeroSection component
- * 
+ *
  * This file exports all types and interfaces used by HeroSection
  * for better type safety and reusability.
- * 
+ *
  * NOTE: This component now supports both legacy and unified APIs
  * for backward compatibility.
  */
@@ -11,7 +11,12 @@
 import { ReactNode } from 'react';
 
 // Legacy variant types (for backward compatibility)
-export type LegacyHeroVariant = 'primary' | 'secondary' | 'dark' | 'light' | 'gradient';
+export type LegacyHeroVariant =
+  | 'primary'
+  | 'secondary'
+  | 'dark'
+  | 'light'
+  | 'gradient';
 export type LegacyHeroSize = 'sm' | 'md' | 'lg' | 'xl';
 
 // New unified variant types
@@ -120,10 +125,6 @@ export interface HeroSectionProps {
   typingDelay?: number;
   typingLoop?: boolean;
   typingLoopDelay?: number;
-
-  // Animation
-  enableAnimation?: boolean;
-  animationDelay?: number;
 
   // Accessibility
   ariaLabel?: string;

@@ -106,13 +106,6 @@ import { HeroSection } from '@/components/ui/HeroSection';
 | `titleClassName` | `string` | `''` | CSS classes للعنوان |
 | `descriptionClassName` | `string` | `''` | CSS classes للوصف |
 
-### Animation Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `enableAnimation` | `boolean` | `true` | تفعيل الأنيميشن |
-| `animationDelay` | `number` | `0` | تأخير الأنيميشن (بالثواني) |
-
 ### Accessibility Props
 
 | Prop | Type | Default | Description |

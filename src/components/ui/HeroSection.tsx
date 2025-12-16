@@ -617,7 +617,7 @@ export default function HeroSection({
                 <span
                   key={index}
                   className={cn(
-                    'px-3 py-1.5 sm:px-4 sm:py-2 md:px-3 md:py-1.5 lg:px-4 lg:py-2 backdrop-blur-md rounded-full text-xs sm:text-sm md:text-xs lg:text-sm font-medium transition-all duration-300 border drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] flex items-center gap-1.5 sm:gap-2',
+                    'px-3 py-1.5 sm:px-4 sm:py-2 md:px-3 md:py-1.5 lg:px-4 lg:py-2 backdrop-blur-md rounded-full text-xs sm:text-sm md:text-xs lg:text-sm font-medium border drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)] flex items-center gap-1.5 sm:gap-2',
                     badge.variant === 'accent'
                       ? 'bg-primary-500/30 text-white border-primary-400/40'
                       : badge.variant === 'success'
