@@ -4,14 +4,16 @@
 const nextConfig = {
   // Enable bundle analyzer when ANALYZE=true
   ...(process.env.ANALYZE && {
-    bundleAnalyzer: await import('@next/bundle-analyzer').then((m) => m.default({
-      enabled: true,
-    })),
+    bundleAnalyzer: await import('@next/bundle-analyzer').then((m) =>
+      m.default({
+        enabled: true,
+      })
+    ),
   }),
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: 'www.theiia.org',
         port: '',
         pathname: '/**',
@@ -97,7 +99,7 @@ const nextConfig = {
             const context = module.context || '';
             const match = context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
             const packageName = match ? match[1] : '';
-            
+
             if (packageName) {
               if (packageName.includes('framer-motion')) return 'framer-motion';
               if (packageName.includes('lucide-react')) return 'icons';
@@ -129,9 +131,13 @@ const nextConfig = {
           name(module) {
             // Extract page name from module resource path
             const resource = module.resource || '';
-            const match = resource.match(/[\\/]app[\\/](.*?)([\\/]page|layout)/);
+            const match = resource.match(
+              /[\\/]app[\\/](.*?)([\\/]page|layout)/
+            );
             const pageName = match ? match[1] : '';
-            return pageName ? `page-${pageName.replace(/[\\/]/g, '-')}` : 'pages';
+            return pageName
+              ? `page-${pageName.replace(/[\\/]/g, '-')}`
+              : 'pages';
           },
           priority: 5,
           chunks: 'async',
@@ -147,7 +153,7 @@ const nextConfig = {
   async headers() {
     // الحصول على API URL من environment variables
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-    
+
     return [
       {
         source: '/(.*)',
@@ -156,16 +162,17 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'DENY' },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'X-XSS-Protection', value: '1; mode=block' },
-          
+
           // Referrer Policy
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          
+
           // Permissions Policy
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+            value:
+              'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
           },
-          
+
           // Content Security Policy
           {
             key: 'Content-Security-Policy',
@@ -181,17 +188,19 @@ const nextConfig = {
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'none'",
-              "upgrade-insecure-requests",
+              'upgrade-insecure-requests',
             ].join('; '),
           },
-          
+
           // Strict Transport Security (HSTS) - فقط في production
-          ...(process.env.NODE_ENV === 'production' ? [
-            {
-              key: 'Strict-Transport-Security',
-              value: 'max-age=31536000; includeSubDomains; preload',
-            },
-          ] : []),
+          ...(process.env.NODE_ENV === 'production'
+            ? [
+                {
+                  key: 'Strict-Transport-Security',
+                  value: 'max-age=31536000; includeSubDomains; preload',
+                },
+              ]
+            : []),
         ],
       },
       {
@@ -210,13 +219,19 @@ const nextConfig = {
       {
         source: '/api/(.*)',
         headers: [
-          { key: 'Cache-Control', value: 'public, s-maxage=300, stale-while-revalidate=86400' },
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=86400',
+          },
         ],
       },
       {
         source: '/_next/static/(.*)',
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
         ],
       },
     ];
@@ -224,38 +239,116 @@ const nextConfig = {
   async redirects() {
     return [
       // Packages and Consulting unification - redirect to new unified page
-      { source: '/services', destination: '/packages-and-consulting', permanent: true },
-      { source: '/services/packages', destination: '/packages-and-consulting?tab=packages', permanent: true },
-      { source: '/services/:path*', destination: '/packages-and-consulting', permanent: true },
-      { source: '/packages', destination: '/packages-and-consulting?tab=packages', permanent: true },
-      { source: '/subscription', destination: '/packages-and-consulting?tab=packages', permanent: true },
-      { source: '/consulting', destination: '/packages-and-consulting?tab=consulting', permanent: true },
+      {
+        source: '/services',
+        destination: '/packages-and-consulting',
+        permanent: true,
+      },
+      {
+        source: '/services/packages',
+        destination: '/packages-and-consulting?tab=packages',
+        permanent: true,
+      },
+      {
+        source: '/services/:path*',
+        destination: '/packages-and-consulting',
+        permanent: true,
+      },
+      {
+        source: '/packages',
+        destination: '/packages-and-consulting?tab=packages',
+        permanent: true,
+      },
+      {
+        source: '/subscription',
+        destination: '/packages-and-consulting?tab=packages',
+        permanent: true,
+      },
+      {
+        source: '/consulting',
+        destination: '/packages-and-consulting?tab=consulting',
+        permanent: true,
+      },
       // CIA hub unification
-      { source: '/auditors-fellowship', destination: '/cia?tab=overview', permanent: true },
-      { source: '/courses/cia-preparation', destination: '/cia?tab=resources', permanent: true },
-      { source: '/question-bank', has: [{ type: 'query', key: 'track', value: 'cia' }], destination: '/cia?tab=questions', permanent: true },
-      { source: '/student/exam', has: [{ type: 'query', key: 'track', value: 'cia' }], destination: '/cia?tab=exams', permanent: true },
+      {
+        source: '/auditors-fellowship',
+        destination: '/cia?tab=overview',
+        permanent: true,
+      },
+      {
+        source: '/courses/cia-preparation',
+        destination: '/cia?tab=resources',
+        permanent: true,
+      },
+      {
+        source: '/question-bank',
+        has: [{ type: 'query', key: 'track', value: 'cia' }],
+        destination: '/cia?tab=questions',
+        permanent: true,
+      },
+      {
+        source: '/student/exam',
+        has: [{ type: 'query', key: 'track', value: 'cia' }],
+        destination: '/cia?tab=exams',
+        permanent: true,
+      },
       { source: '/review', destination: '/question-bank', permanent: true },
-      { source: '/advanced-features', destination: '/ai-tools', permanent: true },
+      {
+        source: '/advanced-features',
+        destination: '/ai-tools',
+        permanent: true,
+      },
       // Courses consolidation - redirect individual course pages to main courses page
       // Note: Removed redirects with Arabic characters in query strings to avoid ERR_INVALID_CHAR errors
       // Individual course pages under /courses/[slug] are handled dynamically
       // Old standalone course pages are now accessible directly without redirects
-      
+
       // Fix broken dashboard links - redirect to correct paths
-      { source: '/student-dashboard', destination: '/student', permanent: true },
-      { source: '/my-courses', destination: '/student/courses', permanent: true },
-      { source: '/instructor-dashboard', destination: '/instructor', permanent: true },
-      { source: '/my-students', destination: '/instructor/students', permanent: true },
-      { source: '/admin-dashboard', destination: '/admin/dashboard', permanent: true },
-      { source: '/admin-courses', destination: '/admin/courses', permanent: true },
+      {
+        source: '/student-dashboard',
+        destination: '/student',
+        permanent: true,
+      },
+      {
+        source: '/my-courses',
+        destination: '/student/courses',
+        permanent: true,
+      },
+      {
+        source: '/instructor-dashboard',
+        destination: '/instructor',
+        permanent: true,
+      },
+      {
+        source: '/my-students',
+        destination: '/instructor/students',
+        permanent: true,
+      },
+      {
+        source: '/admin-dashboard',
+        destination: '/admin/dashboard',
+        permanent: true,
+      },
+      {
+        source: '/admin-courses',
+        destination: '/admin/courses',
+        permanent: true,
+      },
       { source: '/admin-users', destination: '/admin/users', permanent: true },
-      
+
       // Fix navigation links mismatch
-      { source: '/internal-auditors', destination: '/internal-audit', permanent: true },
-      
+      {
+        source: '/internal-auditors',
+        destination: '/internal-audit',
+        permanent: true,
+      },
+
       // Redirect financial-management to dynamic course page
-      { source: '/financial-management', destination: '/courses/financial-management', permanent: true },
+      {
+        source: '/financial-management',
+        destination: '/courses/financial-management',
+        permanent: true,
+      },
     ];
   },
 };
