@@ -178,29 +178,28 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              `connect-src 'self' ${apiUrl} https://*.stripe.com https://fonts.googleapis.com https://fonts.gstatic.com`,
+              `connect-src 'self' ${apiUrl} http://* https://*.stripe.com https://fonts.googleapis.com https://fonts.gstatic.com`,
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // unsafe-inline للـ Next.js
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com data:",
-              "img-src 'self' data: https: blob:",
+              "img-src 'self' data: http: https: blob:",
               "media-src 'self' blob:",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'none'",
-              'upgrade-insecure-requests',
             ].join('; '),
           },
 
-          // Strict Transport Security (HSTS) - فقط في production
-          ...(process.env.NODE_ENV === 'production'
-            ? [
-                {
-                  key: 'Strict-Transport-Security',
-                  value: 'max-age=31536000; includeSubDomains; preload',
-                },
-              ]
-            : []),
+          // Strict Transport Security (HSTS) - Disabled to allow HTTP
+          // ...(process.env.NODE_ENV === 'production'
+          //   ? [
+          //       {
+          //         key: 'Strict-Transport-Security',
+          //         value: 'max-age=31536000; includeSubDomains; preload',
+          //       },
+          //     ]
+          //   : []),
         ],
       },
       {

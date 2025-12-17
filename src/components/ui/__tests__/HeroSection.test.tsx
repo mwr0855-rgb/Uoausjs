@@ -1,6 +1,6 @@
 /**
  * Unit Tests for HeroSection Component
- * 
+ *
  * Run: npm test HeroSection
  */
 
@@ -16,22 +16,12 @@ describe('HeroSection', () => {
   });
 
   it('renders description when provided', () => {
-    render(
-      <HeroSection
-        title="Test Title"
-        description="Test Description"
-      />
-    );
+    render(<HeroSection title="Test Title" description="Test Description" />);
     expect(screen.getByText('Test Description')).toBeInTheDocument();
   });
 
   it('renders subtitle when provided', () => {
-    render(
-      <HeroSection
-        title="Test Title"
-        subtitle="Test Subtitle"
-      />
-    );
+    render(<HeroSection title="Test Title" subtitle="Test Subtitle" />);
     expect(screen.getByText('Test Subtitle')).toBeInTheDocument();
   });
 
@@ -39,10 +29,7 @@ describe('HeroSection', () => {
     render(
       <HeroSection
         title="Test Title"
-        badges={[
-          { label: 'Badge 1', icon: <Award /> },
-          { label: 'Badge 2' },
-        ]}
+        badges={[{ label: 'Badge 1', icon: <Award /> }, { label: 'Badge 2' }]}
       />
     );
     expect(screen.getByText('Badge 1')).toBeInTheDocument();
@@ -112,43 +99,32 @@ describe('HeroSection', () => {
 
   it('applies correct variant classes', () => {
     const { container } = render(
-      <HeroSection
-        title="Test Title"
-        variant="primary"
-      />
+      <HeroSection title="Test Title" variant="primary" />
     );
     // Check for overlay class
     expect(container.querySelector('.bg-black\\/60')).toBeInTheDocument();
   });
 
   it('applies correct size classes', () => {
-    const { container } = render(
-      <HeroSection
-        title="Test Title"
-        size="lg"
-      />
-    );
+    const { container } = render(<HeroSection title="Test Title" size="lg" />);
     // Check for size-specific classes
     expect(container.querySelector('.min-h-\\[60vh\\]')).toBeInTheDocument();
   });
 
   it('renders background image when provided', () => {
     render(
-      <HeroSection
-        title="Test Title"
-        backgroundImage="/test-image.jpg"
-      />
+      <HeroSection title="Test Title" backgroundImage="/test-image.jpg" />
     );
     const image = document.querySelector('img');
-    expect(image).toHaveAttribute('src', expect.stringContaining('test-image.jpg'));
+    expect(image).toHaveAttribute(
+      'src',
+      expect.stringContaining('test-image.jpg')
+    );
   });
 
   it('applies custom className', () => {
     const { container } = render(
-      <HeroSection
-        title="Test Title"
-        className="custom-class"
-      />
+      <HeroSection title="Test Title" className="custom-class" />
     );
     expect(container.firstChild).toHaveClass('custom-class');
   });
@@ -175,20 +151,13 @@ describe('HeroSection', () => {
   });
 
   it('renders without animations', () => {
-    render(
-      <HeroSection
-        title="Test Title"
-      />
-    );
+    render(<HeroSection title="Test Title" />);
     // Component renders without animation props
   });
 
   it('applies correct overlay opacity', () => {
     const { container } = render(
-      <HeroSection
-        title="Test Title"
-        overlayOpacity={80}
-      />
+      <HeroSection title="Test Title" overlayOpacity={80} />
     );
     // Check for custom opacity class
     expect(container.querySelector('.bg-black\\/80')).toBeInTheDocument();
@@ -253,12 +222,7 @@ describe('HeroSection Accessibility', () => {
   });
 
   it('has ARIA label when provided', () => {
-    render(
-      <HeroSection
-        title="Test Title"
-        ariaLabel="Custom ARIA Label"
-      />
-    );
+    render(<HeroSection title="Test Title" ariaLabel="Custom ARIA Label" />);
     const section = screen.getByRole('banner');
     expect(section).toHaveAttribute('aria-label', 'Custom ARIA Label');
   });
@@ -296,4 +260,3 @@ describe('HeroSection Performance', () => {
     expect(image).toHaveAttribute('loading', 'lazy');
   });
 });
-
